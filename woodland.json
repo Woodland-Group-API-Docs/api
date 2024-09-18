@@ -1,0 +1,583 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Woodland API: Client Services",
+        "description": "",
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "https://api.woodlandgroup.com",
+            "description": "Production"
+        },
+        {
+            "url": "https://test-api.woodlandgroup.com",
+            "description": "Sandbox"
+        }
+    ],
+    "paths": {
+        "/brokerage/ukcustoms/v1/export": {
+            "post": {
+                "summary": "New Export Declaration",
+                "operationId": "new-export-declaration",
+                "tags": [
+                    "Freight Forwarding Services: UK Export Brokerage"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Brokerage_Request"
+                            },
+                            "example": {
+                                "countryId": "string",
+                                "transportMode": "string",
+                                "direction": "string",
+                                "clientReference": "string",
+                                "consignor": {
+                                    "countryCode": "string",
+                                    "address1": "string",
+                                    "address2": "string",
+                                    "address3": "string",
+                                    "postcode": "string",
+                                    "city": "string",
+                                    "name": "string",
+                                    "companyReferenceNumber": "string",
+                                    "taxId": "string",
+                                    "eoriNumber": "string"
+                                },
+                                "consignee": {
+                                    "countryCode": "string",
+                                    "address1": "string",
+                                    "address2": "string",
+                                    "address3": "string",
+                                    "postcode": "string",
+                                    "city": "string",
+                                    "name": "string",
+                                    "companyReferenceNumber": "string",
+                                    "taxId": "string",
+                                    "eoriNumber": "string"
+                                },
+
+                                "lineItems": [
+                                    {
+                                        "commodityCode": "string",
+                                        "description": "string",
+                                        "itemSuppliedUnits": 0,
+                                        "itemGrossWeight": 0,
+                                        "itemNetWeight": 0,
+                                        "itemWeightUnit": "string",
+                                        "itemValue": 0,
+                                        "itemValueCurrency": "string",
+                                        "itemCPC": "string",
+                                        "packageType": "string",
+                                        "packageCount": 0,
+                                        "originItemCountryId": "string",
+                                        "dutyPreferenceCode": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "description": "Holds the current status of the brokerage request. Max Length 9."
+                                        },
+                                        "referenceNumber": {
+                                            "type": "string",
+                                            "description": "Our Unique Reference Number. Max Length 11."
+                                        },
+                                        "correlationId": {
+                                            "type": "string",
+                                            "description": "A technical tracking reference used by us to trace the route this order takes through all our systems. Our support team might ask you for this during support calls."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "description": "Holds the current status of the brokerage request. Max Length 9."
+                                        },
+                                        "reason": {
+                                            "type": "string",
+                                            "description": "Human readable description of the error encountered."
+                                        },
+                                        "correlationId": {
+                                            "type": "string",
+                                            "description": "A technical tracking reference used by us to trace the route this order takes through all our systems. Our support team might ask you for this during support calls."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "oAuth2ClientCredentials": [
+                        "api://9edcb7c8-196c-4ae6-8613-58f1e7b1bd37/.default",
+                        "api://faa5817a-a423-4077-a7d9-0b5766d132ca/.default"
+                    ]
+                }]
+                
+            }
+        },
+        "/fulfilment/v1/orders": {
+            "post": {
+                "summary": "New Fulfilment Order",
+                "operationId": "orders",
+                "tags": [
+                    "Fulfilment Services"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/New_Order"
+                            },
+                            "example": {
+                                "clientOrderReference": "SO-123456",
+                                "customerOrderReference": "Birthday Present for Sarah",
+                                "woodlandWarehouseCode": "NL-REDWOOD",
+                                "orderDate": "2024-02-18T10:00:24Z",
+                                "dateRequired": "2024-02-25T10:00:24Z",
+                                "type": "B2C",
+                                "pickingInstructions": "Pick Items Carefully",
+                                "packingInstructions": "Ensure Lid is wrapped within item",
+                                "shippingInstructions": "Leave behind sidegate",
+                                "shippingAddress": {
+                                    "companyName": "Woodland Group",
+                                    "name": "John Smith",
+                                    "address": "Hyatt Place, 50-60 Broomfield Rd",
+                                    "town": "Chelmsford",
+                                    "county": "Essex",
+                                    "postcode": "CM1 1SW",
+                                    "countryCode": "GB",
+                                    "telephoneNumber": "+441245619900",
+                                    "emailAddress": "enquires@woodlandgroup.com"
+                                },
+                                "deliveryMethod": "DPD-NextDay",
+                                "orderLines": [
+                                    {
+                                        "orderLineNumber": "1",
+                                        "productCode": "PROD1",
+                                        "quantity": 5,
+                                        "quantityUnit": "unit",
+                                        "batchNumber": "BATCH1",
+                                        "condition": "New"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Order Successfully Received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/New_Order__Accepted"
+                                },
+                                "example": {
+                                    "status": "string",
+                                    "orderReference": "string",
+                                    "correlationId": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "There was a problem with the request received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/New_Order__Bad_Request"
+                                },
+                                "example": {
+                                    "status": "string",
+                                    "correlationId": "string",
+                                    "reason": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "oAuth2ClientCredentials": [
+                        "api://07e40bfc-97fc-4704-b4e2-2ed7f41f8d85/.default",
+                        "api://df58a87c-d042-4fe5-adc6-6fc29321c22e/.default"
+                    ]
+                }]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Brokerage_Request": {
+                "type": "object",
+                "required": [
+                    "countryId",
+                    "transportMode",
+                    "direction",
+                    "clientReference",
+                    "lineItems"
+                ],
+                "properties": {
+                    "countryId": {
+                        "type": "string"
+                    },
+                    "transportMode": {
+                        "type": "string"
+                    },
+                    "direction": {
+                        "type": "string"
+                    },
+                    "clientReference": {
+                        "type": "string"
+                    },
+                    "consignor": {
+                        "type": "object",
+                        "required":[
+                            "countryCode",
+                            "address1",
+                            "city",
+                            "postcode",
+                            "name"
+                        ],
+                        "properties": {
+                            "countryCode": {
+                                "type": "string"
+                            },
+                            "address1": {
+                                "type": "string"
+                            },
+                            "address2": {
+                                "type": "string"
+                            },
+                            "address3": {
+                                "type": "string"
+                            },
+                            "postcode": {
+                                "type": "string"
+                            },
+                            "city": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "companyReferenceNumber": {
+                                "type": "string"
+                            },
+                            "taxId": {
+                                "type": "string"
+                            },
+                            "eoriNumber": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "consignee": {
+                        "type": "object",
+                        "required":[
+                            "countryCode",
+                            "address1",
+                            "city",
+                            "postcode",
+                            "name"
+                        ],
+                        "properties": {
+                            "countryCode": {
+                                "type": "string"
+                            },
+                            "address1": {
+                                "type": "string"
+                            },
+                            "address2": {
+                                "type": "string"
+                            },
+                            "address3": {
+                                "type": "string"
+                            },
+                            "postcode": {
+                                "type": "string"
+                            },
+                            "city": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "companyReferenceNumber": {
+                                "type": "string"
+                            },
+                            "taxId": {
+                                "type": "string"
+                            },
+                            "eoriNumber": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "lineItems": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "commodityCode",
+                                "description",
+                                "itemSuppliedUnits",
+                                "itemGrossWeight",
+                                "itemNetWeight",
+                                "itemWeightUnit",
+                                "itemValue",
+                                "itemValueCurrency",
+                                "originItemCountryId"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "commodityCode": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "itemSuppliedUnits": {
+                                    "type": "integer"
+                                },
+                                "itemGrossWeight": {
+                                    "type": "integer"
+                                },
+                                "itemNetWeight": {
+                                    "type": "integer"
+                                },
+                                "itemWeightUnit": {
+                                    "type": "string"
+                                },
+                                "itemValue": {
+                                    "type": "integer"
+                                },
+                                "itemValueCurrency": {
+                                    "type": "string"
+                                },
+                                "itemCPC": {
+                                    "type": "string"
+                                },
+                                "packageType": {
+                                    "type": "string"
+                                },
+                                "packageCount": {
+                                    "type": "integer"
+                                },
+                                "originItemCountryId": {
+                                    "type": "string"
+                                },
+                                "dutyPreferenceCode": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-apim-schema-name": "Brokerage Request"
+            },
+            "New_Order": {
+                "type": "object",
+                "required": [
+                    "clientOrderReference",
+                    "orderDate",
+                    "dateRequired",
+                    "type",
+                    "shippingAddress",
+                    "orderLines"
+                ],
+                "properties": {
+                    "clientOrderReference": {
+                        "type": "string"
+                    },
+                    "customerOrderReference": {
+                        "type": "string"
+                    },
+                    "woodlandWarehouseCode": {
+                        "type": "string"
+                    },
+                    "orderDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2018-03-20T09:12:28Z"
+                    },
+                    "dateRequired": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2018-03-20T09:12:28Z"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["B2B", "B2C"]
+                    },
+                    "pickingInstructions": {
+                        "type": "string"
+                    },
+                    "packingInstructions": {
+                        "type": "string"
+                    },
+                    "shippingInstructions": {
+                        "type": "string"
+                    },
+                    "shippingAddress": {
+                        "type": "object",
+                        "required": [
+                            "address",
+                            "town",
+                            "county",
+                            "postcode",
+                            "countryCode"
+                        ],
+                        "oneOf": [
+                            {
+                                "required": [
+                                    "companyName"
+                                ]
+                            },{
+                                "required": [
+                                    "name"
+                                ]
+                            }
+                        ],
+                        "properties": {
+                            "companyName": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "address": {
+                                "type": "string"
+                            },
+                            "town": {
+                                "type": "string"
+                            },
+                            "county": {
+                                "type": "string"
+                            },
+                            "postcode": {
+                                "type": "string"
+                            },
+                            "countryCode": {
+                                "type": "string"
+                            },
+                            "telephoneNumber": {
+                                "type": "string"
+                            },
+                            "emailAddress": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "deliveryMethod": {
+                        "type": "string"
+                    },
+                    "orderLines": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "productCode",
+                                "quantity",
+                                "stockGrade"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "orderLineNumber": {
+                                    "type": "string"
+                                },
+                                "productCode": {
+                                    "type": "string"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                },
+                                "quantityUnit": {
+                                    "type": "string",
+                                    "enum": ["unit", "carton", "cartonGroup", "pallet"]
+                                },
+                                "batchNumber": {
+                                    "type": "string"
+                                },
+                                "stockGrade": {
+                                    "type": "string",
+                                    "enum": ["New", "Return"]
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-apim-schema-name": "New Order"
+            },
+            "New_Order__Accepted": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "orderReference": {
+                        "type": "string"
+                    },
+                    "correlationId": {
+                        "type": "string"
+                    }
+                },
+                "x-apim-schema-name": "New Order: Accepted"
+            },
+            "New_Order__Bad_Request": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "correlationId": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    }
+                },
+                "x-apim-schema-name": "New Order: Bad Request"
+            }
+        },
+        "securitySchemes": {
+            
+                "oAuth2ClientCredentials": {
+                    "type": "oauth2",
+                    "flows": {
+                        "clientCredentials": {
+                            "tokenUrl": "https://api.woodlandgroup.com/auth/token",
+                            "scopes": {
+                                "api://9edcb7c8-196c-4ae6-8613-58f1e7b1bd37/.default" : "Access Brokerage Services (Sandbox)",
+                                "api://faa5817a-a423-4077-a7d9-0b5766d132ca/.default" : "Access Brokerage Services (Production)",
+                                "api://07e40bfc-97fc-4704-b4e2-2ed7f41f8d85/.default" : "Access Fulfilment Services (Sandbox)", 
+                                "api://df58a87c-d042-4fe5-adc6-6fc29321c22e/.default" : "Access Fulfilment Services (Production)"  
+                            }
+                        }
+                    }
+                }
+            
+        }
+    }
+}
