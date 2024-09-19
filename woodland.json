@@ -181,7 +181,7 @@
                                         "quantity": 5,
                                         "quantityUnit": "unit",
                                         "batchNumber": "BATCH1",
-                                        "condition": "New"
+                                        "stockGrade": "New"
                                     }
                                 ]
                             }
